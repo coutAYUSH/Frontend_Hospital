@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>All Nurses — MediCare HMS</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div class="app-wrapper">
+    <div th:replace="~{layout/sidebar :: sidebar(${activeTab}, ${role}, ${userEmail})}"></div>
+
+    <main class="main-content">
+        <div class="topbar">
+            <div class="topbar-title">
+                <h1>👩‍⚕️ All Nurses</h1>
+                <p>Complete nursing staff directory</p>
+            </div>
+            <span class="topbar-badge" th:text="${role ?: 'STAFF'}">STAFF</span>
+        </div>
+
+        <div class="page-content">
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Employee ID</th>
+                        <th>Name</th>
+                        <th>Position</th>
+                        <th>Registered</th>
+                        <th>SSN</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="nurse, iStat : ${nurses}">
+                        <td th:text="${iStat.count}" style="color:var(--text-muted)"></td>
+                        <td><span class="badge badge-blue" th:text="${nurse.employeeId}">—</span></td>
+                        <td style="font-weight:500;color:var(--text-primary)" th:text="${nurse.name}">—</td>
+                        <td th:text="${nurse.position}">—</td>
+                        <td>
+                            <span th:if="${nurse.registered}" class="badge badge-green">✓ Yes</span>
+                            <span th:unless="${nurse.registered}" class="badge badge-red">✗ No</span>
+                        </td>
+                        <td th:text="${nurse.ssn}">—</td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(nurses)}">
+                        <td colspan="6">
+                            <div class="empty-state">
+                                <div class="empty-icon">📭</div>
+                                <p>No nurses found</p>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</div>
+</body>
+</html>

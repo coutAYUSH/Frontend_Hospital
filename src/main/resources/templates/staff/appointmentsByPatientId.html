@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Appointments by Patient — MediCare HMS</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div class="app-wrapper">
+    <div th:replace="~{layout/sidebar :: sidebar(${activeTab}, ${role}, ${userEmail})}"></div>
+
+    <main class="main-content">
+        <div class="topbar">
+            <div class="topbar-title">
+                <h1> Appointments by Patient</h1>
+                <p>Look up all appointments for a given patient</p>
+            </div>
+            <span class="topbar-badge" th:text="${role ?: 'STAFF'}">STAFF</span>
+        </div>
+
+        <div class="page-content">
+            <div class="card" style="margin-bottom:20px">
+                <div class="card-body">
+                    <form th:action="@{/staff/appointmentsByPatientId}" method="get" class="search-form">
+                        <input type="number" name="patientId" class="search-input"
+                               placeholder="Enter Patient SSN / ID…"
+                               th:value="${searchId}" min="1"/>
+                        <button type="submit" class="btn btn-primary">🔍 Search</button>
+                    </form>
+                </div>
+            </div>
+
+            <div th:if="${appointments != null}" class="table-wrapper fade-in">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Appointment ID</th>
+                        <th>Patient</th>
+                        <th>Prep Nurse</th>
+                        <th>Physician</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                        <th>Room</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="apt, iStat : ${appointments}">
+                        <td th:text="${iStat.count}" style="color:var(--text-muted)"></td>
+                        <td><span class="badge badge-blue" th:text="${apt.appointmentId}">1</span></td>
+                        <td th:text="${apt.patient}">—</td>
+                        <td th:text="${apt.prepNurse}">—</td>
+                        <td th:text="${apt.physician}">—</td>
+                        <td th:text="${apt.startDateTime}">—</td>
+                        <td th:text="${apt.endDateTime}">—</td>
+                        <td><span class="badge badge-purple" th:text="${apt.examinationRoom}">—</span></td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(appointments)}">
+                        <td colspan="8">
+                            <div class="empty-state">
+                                <div class="empty-icon">📭</div>
+                                <p>No appointments found for this patient</p>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</div>
+</body>
+</html>

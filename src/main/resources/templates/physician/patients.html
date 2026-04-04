@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>My Patients — MediCare HMS</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div class="app-wrapper">
+    <div th:replace="~{layout/sidebar :: sidebar(${activeTab}, ${role}, ${userEmail})}"></div>
+
+    <main class="main-content">
+        <div class="topbar">
+            <div class="topbar-title">
+                <h1>🧑‍🤝‍🧑 My Patients</h1>
+                <p>Patients currently under your care</p>
+            </div>
+            <span class="topbar-badge">Physician</span>
+        </div>
+
+        <div class="page-content">
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>SSN</th>
+                        <th>Name</th>
+                        <th>Address</th>
+                        <th>Phone</th>
+                        <th>Insurance ID</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="p, iStat : ${patients}">
+                        <td th:text="${iStat.count}" style="color:var(--text-muted)"></td>
+                        <td><span class="badge badge-blue" th:text="${p.ssn}">—</span></td>
+                        <td style="font-weight:500;color:var(--text-primary)" th:text="${p.name}">—</td>
+                        <td th:text="${p.address}">—</td>
+                        <td th:text="${p.phone}">—</td>
+                        <td th:text="${p.insuranceId}">—</td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(patients)}">
+                        <td colspan="6">
+                            <div class="empty-state">
+                                <div class="empty-icon">📭</div>
+                                <p>No patients found</p>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</div>
+</body>
+</html>
