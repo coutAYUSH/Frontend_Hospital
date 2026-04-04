@@ -59,4 +59,24 @@ public class PhysicianController {
         model.addAttribute("userEmail", session.getAttribute("userEmail"));
         return "physician/prescribes";
     }
+
+    @GetMapping("/allpatients")
+    public String allPatients(HttpSession session, Model model) {
+        if (isUnauthorized(session)) return "redirect:/login";
+        model.addAttribute("patients", apiService.getAllPatients(getToken(session)));
+        model.addAttribute("role", session.getAttribute("role"));
+        model.addAttribute("userEmail", session.getAttribute("userEmail"));
+        model.addAttribute("activeTab", "allpatients");
+        return "staff/allpatients";
+    }
+
+    @GetMapping("/allphysicians")
+    public String allPhysicians(HttpSession session, Model model) {
+        if (isUnauthorized(session)) return "redirect:/login";
+        model.addAttribute("physicians", apiService.getAllPhysicians(getToken(session)));
+        model.addAttribute("role", session.getAttribute("role"));
+        model.addAttribute("userEmail", session.getAttribute("userEmail"));
+        model.addAttribute("activeTab", "allphysicians");
+        return "staff/allphysicians";
+    }
 }
