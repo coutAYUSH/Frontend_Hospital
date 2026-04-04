@@ -1,0 +1,12 @@
+server:
+  port: 8090
+
+spring:
+  application:
+    name: hospital-frontend
+  thymeleaf:
+    cache: false
+    suffix: .html
+
+backend:
+  base-url: http://localhost:8080
