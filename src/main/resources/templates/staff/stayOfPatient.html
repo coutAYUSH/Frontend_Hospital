@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Patient Stay — MediCare HMS</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div class="app-wrapper">
+    <div th:replace="~{layout/sidebar :: sidebar(${activeTab}, ${role}, ${userEmail})}"></div>
+
+    <main class="main-content">
+        <div class="topbar">
+            <div class="topbar-title">
+                <h1>🛏 Patient Stay Records</h1>
+                <p>View hospital stay history for a patient</p>
+            </div>
+            <span class="topbar-badge" th:text="${role ?: 'STAFF'}">STAFF</span>
+        </div>
+
+        <div class="page-content">
+            <div class="card" style="margin-bottom:20px">
+                <div class="card-body">
+                    <form th:action="@{/staff/stayOfPatient}" method="get" class="search-form">
+                        <input type="number" name="patientId" class="search-input"
+                               placeholder="Enter Patient SSN / ID…"
+                               th:value="${searchId}" min="1"/>
+                        <button type="submit" class="btn btn-primary">🔍 Search</button>
+                    </form>
+                </div>
+            </div>
+
+            <div th:if="${stays != null}" class="table-wrapper fade-in">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Stay ID</th>
+                        <th>Patient</th>
+                        <th>Room</th>
+                        <th>Stay Start</th>
+                        <th>Stay End</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="stay, iStat : ${stays}">
+                        <td th:text="${iStat.count}" style="color:var(--text-muted)"></td>
+                        <td><span class="badge badge-blue" th:text="${stay.stayId}">—</span></td>
+                        <td th:text="${stay.patient}">—</td>
+                        <td th:text="${stay.room}">—</td>
+                        <td th:text="${stay.stayStart}">—</td>
+                        <td th:text="${stay.stayEnd}">—</td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(stays)}">
+                        <td colspan="6">
+                            <div class="empty-state">
+                                <div class="empty-icon">📭</div>
+                                <p>No stay records found for this patient</p>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</div>
+</body>
+</html>

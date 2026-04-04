@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Patient by ID — MediCare HMS</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div class="app-wrapper">
+    <div th:replace="~{layout/sidebar :: sidebar(${activeTab}, ${role}, ${userEmail})}"></div>
+
+    <main class="main-content">
+        <div class="topbar">
+            <div class="topbar-title">
+                <h1> Patient by ID</h1>
+                <p>Search for a patient using their SSN</p>
+            </div>
+            <span class="topbar-badge" th:text="${role ?: 'STAFF'}">STAFF</span>
+        </div>
+
+        <div class="page-content">
+            <div class="card" style="margin-bottom:20px">
+                <div class="card-body">
+                    <form th:action="@{/staff/patientById}" method="get" id="searchPatientForm" class="search-form">
+                        <input type="number" id="patientIdInput" name="id" class="search-input"
+                               placeholder="Enter Patient SSN / ID…"
+                               th:value="${searchId}" min="1"/>
+                        <button type="submit" class="btn btn-primary" id="searchBtn">🔍 Search</button>
+                    </form>
+                </div>
+            </div>
+
+            <div th:if="${patient != null}" class="card fade-in">
+                <div class="card-header">
+                    <h3> Patient Details</h3>
+                    <span class="badge badge-green">Found</span>
+                </div>
+                <div class="card-body">
+                    <div class="detail-card">
+                        <div class="detail-item">
+                            <div class="detail-label">SSN</div>
+                            <div class="detail-value" th:text="${patient.ssn}">—</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Full Name</div>
+                            <div class="detail-value" th:text="${patient.name}">—</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Address</div>
+                            <div class="detail-value" th:text="${patient.address}">—</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Phone</div>
+                            <div class="detail-value" th:text="${patient.phone}">—</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Insurance ID</div>
+                            <div class="detail-value" th:text="${patient.insuranceId}">—</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div th:if="${searchId != null and patient == null}" class="card fade-in">
+                <div class="card-body">
+                    <div class="empty-state">
+                        <div class="empty-icon">🔕</div>
+                        <p>No patient found with ID <strong th:text="${searchId}"></strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+</body>
+</html>

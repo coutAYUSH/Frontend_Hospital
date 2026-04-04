@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Physician Training — MediCare HMS</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div class="app-wrapper">
+    <div th:replace="~{layout/sidebar :: sidebar(${activeTab}, ${role}, ${userEmail})}"></div>
+
+    <main class="main-content">
+        <div class="topbar">
+            <div class="topbar-title">
+                <h1>🎓 Physician Trained In</h1>
+                <p>View procedures a physician is trained in</p>
+            </div>
+            <span class="topbar-badge" th:text="${role ?: 'STAFF'}">STAFF</span>
+        </div>
+
+        <div class="page-content">
+            <div class="card" style="margin-bottom:20px">
+                <div class="card-body">
+                    <form th:action="@{/staff/physicianTrainedIn}" method="get" class="search-form">
+                        <input type="number" name="physicianId" class="search-input"
+                               placeholder="Enter Physician Employee ID…"
+                               th:value="${searchId}" min="1"/>
+                        <button type="submit" class="btn btn-primary">🔍 Search</button>
+                    </form>
+                </div>
+            </div>
+
+            <div th:if="${trainings != null}" class="table-wrapper fade-in">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Physician ID</th>
+                        <th>Physician Name</th>
+                        <th>Procedure Code</th>
+                        <th>Procedure Name</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="t, iStat : ${trainings}">
+                        <td th:text="${iStat.count}" style="color:var(--text-muted)"></td>
+                        <td><span class="badge badge-blue" th:text="${t.physicianId}">—</span></td>
+                        <td style="font-weight:500;color:var(--text-primary)" th:text="${t.physicianName}">—</td>
+                        <td><span class="badge badge-purple" th:text="${t.procedureCode}">—</span></td>
+                        <td th:text="${t.procedureName}">—</td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(trainings)}">
+                        <td colspan="5">
+                            <div class="empty-state">
+                                <div class="empty-icon">📭</div>
+                                <p>No training records found for this physician</p>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</div>
+</body>
+</html>
