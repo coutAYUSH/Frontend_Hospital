@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>On Calls — MediCare HMS</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div class="app-wrapper">
+    <div th:replace="~{layout/sidebar :: sidebar(${activeTab}, ${role}, ${userEmail})}"></div>
+
+    <main class="main-content">
+        <div class="topbar">
+            <div class="topbar-title">
+                <h1>On-Call Schedule</h1>
+                <p>View your current on-call assignments</p>
+            </div>
+            <span class="topbar-badge">Nurse</span>
+        </div>
+
+        <div class="page-content">
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Appointment ID</th>
+                        <th>Patient</th>
+                        <th>Physician</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                        <th>Room</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="apt, iStat : ${oncalls}">
+                        <td th:text="${iStat.count}" style="color:var(--text-muted)"></td>
+                        <td><span class="badge badge-amber" th:text="${apt.appointmentId}">1</span></td>
+                        <td th:text="${apt.patient}">—</td>
+                        <td th:text="${apt.physician}">—</td>
+                        <td th:text="${apt.startDateTime}">—</td>
+                        <td th:text="${apt.endDateTime}">—</td>
+                        <td><span class="badge badge-purple" th:text="${apt.examinationRoom}">—</span></td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(oncalls)}">
+                        <td colspan="7">
+                            <div class="empty-state">
+                                <div class="empty-icon">📭</div>
+                                <p>No on-call data found</p>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</div>
+</body>
+</html>
