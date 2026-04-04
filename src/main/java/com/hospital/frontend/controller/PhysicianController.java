@@ -50,4 +50,13 @@ public class PhysicianController {
         model.addAttribute("userEmail", session.getAttribute("userEmail"));
         return "physician/appointments";
     }
+    @GetMapping("/prescribes")
+    public String prescribes(HttpSession session, Model model) {
+        if (isUnauthorized(session)) return "redirect:/login";
+        model.addAttribute("prescribes", apiService.getPhysicianPrescribes(getToken(session)));
+        model.addAttribute("activeTab", "prescribes");
+        model.addAttribute("role", session.getAttribute("role"));
+        model.addAttribute("userEmail", session.getAttribute("userEmail"));
+        return "physician/prescribes";
+    }
 }

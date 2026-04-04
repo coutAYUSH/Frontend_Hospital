@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title th:replace="${pageTitle} ?: 'Hospital Management System'">HMS</title>
+    <meta name="description" content="Hospital Management System - Manage staff, patients, appointments and more."/>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+
+<!-- SIDEBAR NAV FRAGMENT -->
+<nav class="sidebar" th:fragment="sidebar(activeTab, role, userEmail)">
+    <div class="sidebar-logo">
+        <div class="logo-icon"></div>
+        <h2>MediCare HMS</h2>
+        <p th:text="${role}">Role</p>
+    </div>
+
+    <div class="sidebar-nav">
+        <!-- NURSE NAV -->
+        <div th:if="${role != null and #strings.equalsIgnoreCase(role, 'NURSE')}">
+            <div class="nav-section-label">Nurse Panel</div>
+            <a th:href="@{/nurse/appointments}"
+               th:classappend="${activeTab == 'appointments'} ? 'active' : ''"
+               class="nav-item">
+                <span class="nav-icon"></span> Appointments
+            </a>
+            <a th:href="@{/nurse/oncalls}"
+               th:classappend="${activeTab == 'oncalls'} ? 'active' : ''"
+               class="nav-item">
+                <span class="nav-icon"></span> On Calls
+            </a>
+            <a th:href="@{/nurse/allnurse}"
+               th:classappend="${activeTab == 'allnurse'} ? 'active' : ''"
+               class="nav-item">
+                <span class="nav-icon"></span> All Nurses
+            </a>
+        </div>
+
+        <!-- PHYSICIAN NAV -->
+        <div th:if="${role != null and #strings.equalsIgnoreCase(role, 'PHYSICIAN')}">
+            <div class="nav-section-label">Physician Panel</div>
+            <a th:href="@{/physician/patients}"
+               th:classappend="${activeTab == 'patients'} ? 'active' : ''"
+               class="nav-item">
+                <span class="nav-icon"></span> My Patients
+            </a>
+            <a th:href="@{/physician/appointments}"
+               th:classappend="${activeTab == 'appointments'} ? 'active' : ''"
+               class="nav-item">
+                <span class="nav-icon"></span> Appointments
+            </a>
+            <a th:href="@{/physician/prescribes}"
+               th:classappend="${activeTab == 'prescribes'} ? 'active' : ''"
+               class="nav-item">
+                <span class="nav-icon"></span> Prescriptions
+            </a>
+        </div>
+
+        <!-- STAFF NAV -->
+        <div th:if="${role == null or (!#strings.equalsIgnoreCase(role, 'NURSE') and !#strings.equalsIgnoreCase(role, 'PHYSICIAN'))}">
+            <div class="nav-section-label">Staff Panel</div>
+            <a th:href="@{/staff/dashboard}"
+               th:classappend="${activeTab == 'dashboard'} ? 'active' : ''"
+               class="nav-item">
+                <span class="nav-icon"></span> Dashboard
+            </a>
+            <a th:href="@{/staff/allpatients}"
+               th:classappend="${activeTab == 'allpatients'} ? 'active' : ''"
+               class="nav-item">
+                <span class="nav-icon"></span> All Patients
+            </a>
+            <a th:href="@{/staff/allphysicians}"
+               th:classappend="${activeTab == 'allphysicians'} ? 'active' : ''"
+               class="nav-item">
+                <span class="nav-icon"></span> All Physicians
+            </a>
+            <a th:href="@{/staff/allnurses}"
+               th:classappend="${activeTab == 'allnurses'} ? 'active' : ''"
+               class="nav-item">
+                <span class="nav-icon">️</span> All Nurses
+            </a>
+            <div class="nav-section-label">Search</div>
+            <a th:href="@{/staff/patientById}"
+               th:classappend="${activeTab == 'patientById'} ? 'active' : ''"
+               class="nav-item">
+                <span class="nav-icon"></span> Patient by ID
+            </a>
+            <a th:href="@{/staff/appointments}"
+               th:classappend="${activeTab == 'appointments'} ? 'active' : ''"
+               class="nav-item">
+                <span class="nav-icon"></span> Appointments by ID
+            </a>
+            <a th:href="@{/staff/appointmentsByPatientId}"
+               th:classappend="${activeTab == 'appointmentsByPatientId'} ? 'active' : ''"
+               class="nav-item">
+                <span class="nav-icon"></span> Appts by Patient
+            </a>
+            <a th:href="@{/staff/stayOfPatient}"
+               th:classappend="${activeTab == 'stayOfPatient'} ? 'active' : ''"
+               class="nav-item">
+                <span class="nav-icon"></span> Patient Stay
+            </a>
+            <a th:href="@{/staff/physicianTrainedIn}"
+               th:classappend="${activeTab == 'physicianTrainedIn'} ? 'active' : ''"
+               class="nav-item">
+                <span class="nav-icon"></span> Physician Training
+            </a>
+            <div class="nav-section-label">Medical</div>
+            <a th:href="@{/staff/procedure/all}"
+               th:classappend="${activeTab == 'procedures'} ? 'active' : ''"
+               class="nav-item">
+                <span class="nav-icon"></span> All Procedures
+            </a>
+            <div class="nav-section-label">Admin</div>
+            <a th:href="@{/staff/register}"
+               th:classappend="${activeTab == 'register'} ? 'active' : ''"
+               class="nav-item">
+                <span class="nav-icon"></span> Register Staff
+            </a>
+        </div>
+    </div>
+
+    <div class="sidebar-footer">
+        <div class="user-info">
+            <div class="user-avatar" th:text="${userEmail != null ? userEmail.substring(0,1).toUpperCase() : 'U'}">U</div>
+            <div class="user-details">
+                <div class="user-email" th:text="${userEmail ?: 'User'}">user@hospital.com</div>
+                <div class="user-role" th:text="${role ?: 'STAFF'}">STAFF</div>
+            </div>
+        </div>
+        <a href="/logout" class="btn-logout">
+            <span></span> Sign Out
+        </a>
+    </div>
+</nav>
+
+</body>
+</html>
