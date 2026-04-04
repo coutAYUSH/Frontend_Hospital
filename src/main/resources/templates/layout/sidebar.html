@@ -87,11 +87,7 @@
                class="nav-item">
                 <span class="nav-icon"></span> Patient by ID
             </a>
-            <a th:href="@{/staff/appointments}"
-               th:classappend="${activeTab == 'appointments'} ? 'active' : ''"
-               class="nav-item">
-                <span class="nav-icon"></span> Appointments by ID
-            </a>
+
             <a th:href="@{/staff/appointmentsByPatientId}"
                th:classappend="${activeTab == 'appointmentsByPatientId'} ? 'active' : ''"
                class="nav-item">
